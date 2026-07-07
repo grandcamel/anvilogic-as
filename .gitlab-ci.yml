@@ -1,0 +1,27 @@
+# GitLab CI mirror of .github/workflows/ci.yml (used when hosted on GitLab;
+# inert on GitHub). Release automation is handled separately — see
+# docs/migration-gitlab-runbook.md.
+stages:
+  - verify
+
+build-test:
+  stage: verify
+  image: golang:1.26
+  script:
+    - go build ./...
+    - go vet ./...
+    - go test -race ./...
+    - test -z "$(gofmt -l .)" || { gofmt -l .; echo "gofmt violations"; exit 1; }
+    - ANVILOGIC_MOCK_MODE=1 go run ./cmd/anvilogic-as api GET /v1/ping
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+
+lint:
+  stage: verify
+  image: golangci/golangci-lint:v2.1
+  script:
+    - golangci-lint run
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'

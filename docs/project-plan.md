@@ -10,6 +10,13 @@
 > [wave4](wave4-coverage-runbook.md) ·
 > [wave5](wave5-release-runbook.md).
 > Reference workflow scripts from Waves 1–2 are under [workflows/](workflows/).
+>
+> **Hosting migration:** both repos are moving to a GitLab namespace with
+> corporate commit identity — run [migration-gitlab-runbook.md](migration-gitlab-runbook.md)
+> **before Wave 4** (Wave 3's registry upgrade may land on either host, but
+> don't split a wave across hosts). release-please gets replaced by
+> goreleaser-on-GitLab as part of the migration. Operator context for any
+> Claude session working these repos lives in each repo's `CLAUDE.md`.
 
 ## Context
 
