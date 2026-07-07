@@ -24,6 +24,21 @@ plugin listed.
   usernames, API keys, or detection content that could identify the tenant.
   Replace with synthetic equivalents preserving shape.
 
+## Prerequisite: repo setting for release-please
+
+The `release` workflow on both repos fails until "Allow GitHub Actions to
+create and approve pull requests" is enabled (Settings → Actions → General →
+Workflow permissions), or equivalently:
+
+```sh
+for r in anvilogic-as Anvilogic-Assistant-Skills; do
+  gh api -X PUT "repos/grandcamel/$r/actions/permissions/workflow" \
+    -f default_workflow_permissions=write -F can_approve_pull_request_reviews=true
+done
+```
+
+CI (`ci.yml`) is unaffected; only release-please's PR creation needs this.
+
 ## Steps (orchestrated)
 
 1. **Auth confirmation:** `anvilogic-as auth validate` against the live
