@@ -1,0 +1,410 @@
+# Anvilogic api-surface coverage matrix — Wave 1 (generated 2026-07-06)
+# One row per expected domain.operation. Wave 1 rule: captured=true only where
+# an endpoints.yaml entry exists (registry_id set); implemented/tested/documented
+# are all false until later waves. All-false rows make gaps visible.
+
+coverage:
+
+  # detections
+  detections.list:
+    captured: true
+    implemented: false
+    tested: false
+    documented: false
+    registry_id: detections.list
+  detections.get:
+    captured: true
+    implemented: false
+    tested: false
+    documented: false
+    registry_id: detections.get
+  detections.create:
+    captured: false
+    implemented: false
+    tested: false
+    documented: false
+    registry_id: null
+  detections.update:
+    captured: false
+    implemented: false
+    tested: false
+    documented: false
+    registry_id: null
+  detections.delete:
+    captured: false
+    implemented: false
+    tested: false
+    documented: false
+    registry_id: null
+  detections.search:
+    captured: false
+    implemented: false
+    tested: false
+    documented: false
+    registry_id: null
+  detections.deploy:
+    captured: true
+    implemented: false
+    tested: false
+    documented: false
+    registry_id: detections.deploy
+  detections.import:
+    captured: true
+    implemented: false
+    tested: false
+    documented: false
+    registry_id: detections.import_existing
+  detections.get_rating:
+    captured: true
+    implemented: false
+    tested: false
+    documented: false
+    registry_id: detections.get_rating
+  detections.pull_metadata:
+    captured: true
+    implemented: false
+    tested: false
+    documented: false
+    registry_id: detections.pull_metadata
+
+  # scenarios (use cases)
+  scenarios.list:
+    captured: false
+    implemented: false
+    tested: false
+    documented: false
+    registry_id: null
+  scenarios.get:
+    captured: false
+    implemented: false
+    tested: false
+    documented: false
+    registry_id: null
+  scenarios.create:
+    captured: true
+    implemented: false
+    tested: false
+    documented: false
+    registry_id: scenarios.create
+  scenarios.update:
+    captured: false
+    implemented: false
+    tested: false
+    documented: false
+    registry_id: null
+  scenarios.delete:
+    captured: false
+    implemented: false
+    tested: false
+    documented: false
+    registry_id: null
+  scenarios.deploy:
+    captured: false
+    implemented: false
+    tested: false
+    documented: false
+    registry_id: null
+
+  # eoi (events of interest)
+  eoi.list:
+    captured: false
+    implemented: false
+    tested: false
+    documented: false
+    registry_id: null
+  eoi.get:
+    captured: false
+    implemented: false
+    tested: false
+    documented: false
+    registry_id: null
+  eoi.search:
+    captured: false
+    implemented: false
+    tested: false
+    documented: false
+    registry_id: null
+  eoi.summary:
+    captured: true
+    implemented: false
+    tested: false
+    documented: false
+    registry_id: eoi.summary
+  eoi.analysis_summary:
+    captured: true
+    implemented: false
+    tested: false
+    documented: false
+    registry_id: eoi.analysis_summary
+  eoi.usecase_frequency:
+    captured: true
+    implemented: false
+    tested: false
+    documented: false
+    registry_id: eoi.usecase_frequency
+  eoi.copilot_submit:
+    captured: true
+    implemented: false
+    tested: false
+    documented: false
+    registry_id: eoi.copilot_submit
+  eoi.copilot_get_results:
+    captured: true
+    implemented: false
+    tested: false
+    documented: false
+    registry_id: eoi.copilot_get_results
+  eoi.copilot_submit_entity:
+    captured: true
+    implemented: false
+    tested: false
+    documented: false
+    registry_id: eoi.copilot_submit_entity
+  eoi.copilot_get_entity_results:
+    captured: true
+    implemented: false
+    tested: false
+    documented: false
+    registry_id: eoi.copilot_get_entity_results
+  eoi.files_exchange:
+    captured: true
+    implemented: false
+    tested: false
+    documented: false
+    registry_id: eoi.files_exchange
+
+  # hunting (no public endpoint evidence in Wave 1)
+  hunting.list:
+    captured: false
+    implemented: false
+    tested: false
+    documented: false
+    registry_id: null
+  hunting.get:
+    captured: false
+    implemented: false
+    tested: false
+    documented: false
+    registry_id: null
+  hunting.create:
+    captured: false
+    implemented: false
+    tested: false
+    documented: false
+    registry_id: null
+  hunting.search:
+    captured: false
+    implemented: false
+    tested: false
+    documented: false
+    registry_id: null
+
+  # alerts
+  alerts.list:
+    captured: false
+    implemented: false
+    tested: false
+    documented: false
+    registry_id: null
+  alerts.get:
+    captured: false
+    implemented: false
+    tested: false
+    documented: false
+    registry_id: null
+  alerts.update:
+    captured: false
+    implemented: false
+    tested: false
+    documented: false
+    registry_id: null
+  alerts.ingest:
+    captured: true
+    implemented: false
+    tested: false
+    documented: false
+    registry_id: alerts.ingest_vendor_events
+  alerts.soar_pull:
+    captured: true
+    implemented: false
+    tested: false
+    documented: false
+    registry_id: alerts.soar_pull
+
+  # feeds
+  feeds.list:
+    captured: false
+    implemented: false
+    tested: false
+    documented: false
+    registry_id: null
+  feeds.get:
+    captured: false
+    implemented: false
+    tested: false
+    documented: false
+    registry_id: null
+  feeds.update:
+    captured: true
+    implemented: false
+    tested: false
+    documented: false
+    registry_id: feeds.update
+  feeds.sync:  # documented as an internal 7-day platform sync, not a customer-invocable endpoint
+    captured: false
+    implemented: false
+    tested: false
+    documented: false
+    registry_id: null
+  feeds.create_integration:
+    captured: true
+    implemented: false
+    tested: false
+    documented: false
+    registry_id: feeds.create_forwarding_integration
+
+  # forge (trending topics / threat detection report)
+  forge.list_trending_topics:
+    captured: false
+    implemented: false
+    tested: false
+    documented: false
+    registry_id: null
+  forge.get_trending_topic:
+    captured: false
+    implemented: false
+    tested: false
+    documented: false
+    registry_id: null
+  forge.deploy_trending_topic:  # covered by the bundled deploy-recommended-content operation
+    captured: true
+    implemented: false
+    tested: false
+    documented: false
+    registry_id: detections.deploy
+
+  # blueprints (concept confirmed only via armory commit message; no endpoints)
+  blueprints.list:
+    captured: false
+    implemented: false
+    tested: false
+    documented: false
+    registry_id: null
+  blueprints.get:
+    captured: false
+    implemented: false
+    tested: false
+    documented: false
+    registry_id: null
+
+  # metrics (maturity score / coverage)
+  metrics.get_maturity_score:
+    captured: false
+    implemented: false
+    tested: false
+    documented: false
+    registry_id: null
+  metrics.get_detection_coverage:
+    captured: true
+    implemented: false
+    tested: false
+    documented: false
+    registry_id: metrics.detection_coverage
+  metrics.get_feed_score:
+    captured: false
+    implemented: false
+    tested: false
+    documented: false
+    registry_id: null
+
+  # platform (settings, org config, copilot admin, priorities)
+  platform.generate_api_key:
+    captured: true
+    implemented: false
+    tested: false
+    documented: false
+    registry_id: platform.generate_api_key
+  platform.download_splunk_app:
+    captured: true
+    implemented: false
+    tested: false
+    documented: false
+    registry_id: platform.download_splunk_app
+  platform.health_check:
+    captured: true
+    implemented: false
+    tested: false
+    documented: false
+    registry_id: platform.health_check
+  platform.get_threat_profile:
+    captured: false
+    implemented: false
+    tested: false
+    documented: false
+    registry_id: null
+  platform.update_threat_profile:
+    captured: true
+    implemented: false
+    tested: false
+    documented: false
+    registry_id: platform.update_threat_profile
+  platform.integrate_snowflake:
+    captured: true
+    implemented: false
+    tested: false
+    documented: false
+    registry_id: platform.integrate_snowflake
+  platform.list_vendors:
+    captured: true
+    implemented: false
+    tested: false
+    documented: false
+    registry_id: platform.list_vendors
+  platform.copilot_license:
+    captured: true
+    implemented: false
+    tested: false
+    documented: false
+    registry_id: platform.copilot_license
+  platform.priorities_list_all:
+    captured: true
+    implemented: false
+    tested: false
+    documented: false
+    registry_id: platform.priorities_list_all
+  platform.priorities_threat_groups:
+    captured: true
+    implemented: false
+    tested: false
+    documented: false
+    registry_id: platform.priorities_threat_groups
+  platform.priorities_platforms:
+    captured: true
+    implemented: false
+    tested: false
+    documented: false
+    registry_id: platform.priorities_platforms
+  platform.priorities_mitre_techniques:
+    captured: true
+    implemented: false
+    tested: false
+    documented: false
+    registry_id: platform.priorities_mitre_techniques
+  platform.priorities_prioritised_techniques:
+    captured: true
+    implemented: false
+    tested: false
+    documented: false
+    registry_id: platform.priorities_prioritised_techniques
+  platform.priorities_data_categories:
+    captured: true
+    implemented: false
+    tested: false
+    documented: false
+    registry_id: platform.priorities_data_categories
+  platform.manage_users:
+    captured: false
+    implemented: false
+    tested: false
+    documented: false
+    registry_id: null

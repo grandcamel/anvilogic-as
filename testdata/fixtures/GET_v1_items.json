@@ -1,0 +1,6 @@
+{
+  "items": [{"id": 1}, {"id": 2}],
+  "page": 1,
+  "total_pages": 2,
+  "next_cursor": "cur-2"
+}

@@ -1,0 +1,679 @@
+# Anvilogic SaaS control-plane API-surface registry — Wave 1
+# Synthesized 2026-07-06 from four public-source harvests (public docs GitBook,
+# anvilogic-forge/armory, Azure-Sentinel Anvilogic solution, SOAR connector pages).
+#
+# READ THIS FIRST:
+# - NO public source shows an actual Anvilogic SaaS REST path or HTTP method.
+#   Every entry below is inferred from a documented UI action, a documented
+#   connectivity requirement, or a named SOAR connector action. method/path are
+#   UNKNOWN everywhere; nothing is invented.
+# - ADX-side evidence (POST <avl_adx_uri>/v2/rest/query from the Azure Sentinel
+#   connector) is deliberately EXCLUDED from this registry: it is Microsoft's
+#   generic Azure Data Explorer query API on the customer's per-tenant cluster,
+#   not the Anvilogic SaaS control plane. See domain-model.md for that material.
+# - The armory UI deep-link https://secure.anvilogic.com/use_cases?id=AVL_UC####
+#   is a browser route, not a REST endpoint; it is recorded in domain-model.md
+#   and conventions.md (hosts) only.
+
+version: 1
+# base_url is INFERRED: secure.anvilogic.com is the confirmed control-plane host
+# (docs connectivity requirements; armory UI deep-links), but the exact REST API
+# base path beneath it is unknown in Wave 1.
+base_url: https://secure.anvilogic.com
+base_url_confidence: inferred
+generated: '2026-07-06'  # orchestrator template supplied literal 'undefined'; real date used
+
+endpoints:
+
+  # ----------------------------------------------------------------- detections
+  detections.list:
+    domain: detections
+    method: UNKNOWN
+    path: UNKNOWN
+    summary: List the org's detection rule inventory.
+    params: []
+    pagination: {style: unknown}
+    auth: bearer-api-key
+    risk: read
+    confidence: inferred
+    evidence:
+      - source: https://www.tines.com/solutions/products/anvilogic/
+        kind: connector-page
+        note: Tines pre-built action "Retrieves rule inventory in Anvilogic".
+    first_seen: '2026-07-06'
+    last_verified: null
+
+  detections.get:
+    domain: detections
+    method: UNKNOWN
+    path: UNKNOWN
+    summary: Get metadata for a single detection rule.
+    params:
+      - name: rule_id
+        note: Inferred from action semantics; platform rule handle is avl_r<rule_id> (armory id convention, EOI field avl_rule_id).
+    pagination: {style: unknown}
+    auth: bearer-api-key
+    risk: read
+    confidence: inferred
+    evidence:
+      - source: https://www.tines.com/solutions/products/anvilogic/
+        kind: connector-page
+        note: Tines pre-built action "Get the metadata for the rule in Anvilogic".
+      - source: https://github.com/anvilogic-forge/armory/blob/main/detections/cloud/o365_login_events/o365_login_events-splunk-apply_al(avl_r7397).yml
+        kind: repo
+        note: Corroborates rule identifier convention avl_r<rule_id> / '<use_case_id>.<rule_id>'.
+    first_seen: '2026-07-06'
+    last_verified: null
+
+  detections.get_rating:
+    domain: detections
+    method: UNKNOWN
+    path: UNKNOWN
+    summary: Get the rating/score for a detection rule.
+    params:
+      - name: rule_id
+        note: Inferred from action semantics.
+    pagination: {style: unknown}
+    auth: bearer-api-key
+    risk: read
+    confidence: inferred
+    evidence:
+      - source: https://www.tines.com/solutions/products/anvilogic/
+        kind: connector-page
+        note: Tines pre-built action "Get rule rating in Anvilogic".
+    first_seen: '2026-07-06'
+    last_verified: null
+
+  detections.pull_metadata:
+    domain: detections
+    method: UNKNOWN
+    path: UNKNOWN
+    summary: >-
+      Outbound pull by the Anvilogic App for Splunk of "Splunk code and rules
+      metadata" (deployed detection content) from secure.anvilogic.com over 443.
+      Likely the core detection-deployment transport described as "REST API
+      HTTPS/443 TLS1.2+" in the Splunk architecture FAQ.
+    params: []
+    pagination: {style: unknown}
+    auth: bearer-api-key
+    risk: read
+    confidence: inferred
+    evidence:
+      - source: https://public-docs.anvilogic.com/get-started/onboarding-guide/select-your-data-repository-and-get-data-in/integrate-splunk-as-your-data-repository/download-and-install-the-anvilogic-app-for-splunk/splunk-enterprise/verify-requirements.md
+        kind: public-docs
+        note: Connectivity requirement names host and purpose; no path/method shown.
+      - source: https://public-docs.anvilogic.com/get-started/onboarding-guide/select-your-data-repository-and-get-data-in/integrate-splunk-as-your-data-repository/assign-the-avl_admin-role.md
+        kind: public-docs
+        note: Splunk-app capabilities avl_get_rest / avl_post_rest / avl_post_rest_platform prove GET+POST REST traffic to the platform.
+    first_seen: '2026-07-06'
+    last_verified: null
+
+  detections.deploy:
+    domain: detections
+    method: UNKNOWN
+    path: UNKNOWN
+    summary: >-
+      Deploy recommended content (threat identifiers, trending topics, detection
+      packs) from the Home page or Armory; Splunk-app side is gated by the
+      avl_deploy_content capability.
+    params: []
+    pagination: {style: unknown}
+    auth: bearer-api-key
+    risk: write
+    confidence: inferred
+    evidence:
+      - source: https://public-docs.anvilogic.com/get-started/onboarding-guide/review-and-deploy-recommended-content.md
+        kind: public-docs
+        note: UI action only; deploy-detail docs live on gated docs.anvilogic.com.
+      - source: https://public-docs.anvilogic.com/get-started/onboarding-guide/select-your-data-repository-and-get-data-in/integrate-splunk-as-your-data-repository/assign-the-avl_admin-role.md
+        kind: public-docs
+        note: avl_deploy_content capability gates content deployment in the Splunk app.
+    first_seen: '2026-07-06'
+    last_verified: null
+
+  detections.import_existing:
+    domain: detections
+    method: UNKNOWN
+    path: UNKNOWN
+    summary: >-
+      Import existing customer detections as CSV (columns include title,
+      description, search) to map MITRE coverage / detection maturity score.
+    params:
+      - name: csv_file
+        note: CSV upload; columns title, description, search documented.
+    pagination: {style: unknown}
+    auth: bearer-api-key
+    risk: bulk
+    confidence: inferred
+    evidence:
+      - source: https://public-docs.anvilogic.com/get-started/onboarding-guide/optional-upload-your-existing-detections.md
+        kind: public-docs
+        note: UI action; full instructions on gated docs.anvilogic.com (maturity-score/.../import-existing-rules).
+    first_seen: '2026-07-06'
+    last_verified: null
+
+  # ------------------------------------------------------------------ scenarios
+  scenarios.create:
+    domain: scenarios
+    method: UNKNOWN
+    path: UNKNOWN
+    summary: >-
+      Create a use case (threat scenario) on the platform. Anvilogic "use case"
+      maps to the AVL_UC<id> handle seen in armory references.
+    params: []
+    pagination: {style: unknown}
+    auth: bearer-api-key
+    risk: write
+    confidence: inferred
+    evidence:
+      - source: https://www.tines.com/solutions/products/anvilogic/
+        kind: connector-page
+        note: Tines pre-built action "Creates a use case on the platform in Anvilogic".
+      - source: https://github.com/anvilogic-forge/armory/blob/main/detections/endpoint/wscript_cscript_execution/wscript_cscript_execution-splunk-winevent.yml
+        kind: repo
+        note: UI deep-link secure.anvilogic.com/use_cases?id=AVL_UC1029 confirms the use_cases noun and id scheme (UI route, not REST evidence).
+    first_seen: '2026-07-06'
+    last_verified: null
+
+  # ------------------------------------------------------------------------ eoi
+  eoi.summary:
+    domain: eoi
+    method: UNKNOWN
+    path: UNKNOWN
+    summary: Retrieve a summary of events of interest (EOIs).
+    params: []
+    pagination: {style: unknown}
+    auth: bearer-api-key
+    risk: read
+    confidence: inferred
+    evidence:
+      - source: https://www.tines.com/solutions/products/anvilogic/
+        kind: connector-page
+        note: Tines pre-built action "Retrieve EOI summary in Anvilogic".
+    first_seen: '2026-07-06'
+    last_verified: null
+
+  eoi.analysis_summary:
+    domain: eoi
+    method: UNKNOWN
+    path: UNKNOWN
+    summary: Retrieve an analysis-level summary of EOIs.
+    params: []
+    pagination: {style: unknown}
+    auth: bearer-api-key
+    risk: read
+    confidence: inferred
+    evidence:
+      - source: https://www.tines.com/solutions/products/anvilogic/
+        kind: connector-page
+        note: Tines pre-built action "Retrieve EOI analysis summary in Anvilogic".
+    first_seen: '2026-07-06'
+    last_verified: null
+
+  eoi.usecase_frequency:
+    domain: eoi
+    method: UNKNOWN
+    path: UNKNOWN
+    summary: Retrieve EOI frequency statistics per use case.
+    params: []
+    pagination: {style: unknown}
+    auth: bearer-api-key
+    risk: read
+    confidence: inferred
+    evidence:
+      - source: https://www.tines.com/solutions/products/anvilogic/
+        kind: connector-page
+        note: Tines pre-built action "Retrieve EOI use case frequency".
+    first_seen: '2026-07-06'
+    last_verified: null
+
+  eoi.copilot_submit:
+    domain: eoi
+    method: UNKNOWN
+    path: UNKNOWN
+    summary: >-
+      Submit an EOI for Monte Copilot AI triage (async: paired with a separate
+      retrieve-results action; returns MALICIOUS/BENIGN determination + report).
+    params: []
+    pagination: {style: unknown}
+    auth: bearer-api-key
+    risk: write
+    confidence: inferred
+    evidence:
+      - source: https://www.tines.com/solutions/products/anvilogic/
+        kind: connector-page
+        note: Tines pre-built action "Submit EOI for Copilot Analysis".
+      - source: https://www.tines.com/library/stories/1313960/
+        kind: connector-page
+        note: Story "AI Event Triage with Anvilogic Copilot" describes the MALICIOUS/BENIGN determination flow.
+    first_seen: '2026-07-06'
+    last_verified: null
+
+  eoi.copilot_get_results:
+    domain: eoi
+    method: UNKNOWN
+    path: UNKNOWN
+    summary: Retrieve Copilot EOI analysis results for a previously submitted EOI.
+    params:
+      - name: submission_handle
+        note: Inferred; async submit/poll pattern implies a handle or id.
+    pagination: {style: unknown}
+    auth: bearer-api-key
+    risk: read
+    confidence: inferred
+    evidence:
+      - source: https://www.tines.com/solutions/products/anvilogic/
+        kind: connector-page
+        note: Tines pre-built action "Retrieve Copilot EOI Analysis Results".
+    first_seen: '2026-07-06'
+    last_verified: null
+
+  eoi.copilot_submit_entity:
+    domain: eoi
+    method: UNKNOWN
+    path: UNKNOWN
+    summary: Submit an entity/IOC for Copilot analysis (async AI enrichment).
+    params: []
+    pagination: {style: unknown}
+    auth: bearer-api-key
+    risk: write
+    confidence: inferred
+    evidence:
+      - source: https://www.tines.com/solutions/products/anvilogic/
+        kind: connector-page
+        note: Tines pre-built action "Submit Entity for Copilot Analysis".
+    first_seen: '2026-07-06'
+    last_verified: null
+
+  eoi.copilot_get_entity_results:
+    domain: eoi
+    method: UNKNOWN
+    path: UNKNOWN
+    summary: Retrieve Copilot entity analysis results.
+    params:
+      - name: submission_handle
+        note: Inferred; async submit/poll pattern implies a handle or id.
+    pagination: {style: unknown}
+    auth: bearer-api-key
+    risk: read
+    confidence: inferred
+    evidence:
+      - source: https://www.tines.com/solutions/products/anvilogic/
+        kind: connector-page
+        note: Tines pre-built action "Retrieve Copilot Entity Analysis Results".
+    first_seen: '2026-07-06'
+    last_verified: null
+
+  eoi.files_exchange:
+    domain: eoi
+    method: UNKNOWN
+    path: UNKNOWN
+    summary: >-
+      Unknown operation(s) on the dedicated host eoi-files.anvilogic.com; the
+      Splunk app must reach it over 443. Plausibly the EOI file upload/exchange
+      channel behind the AI-Insights Alert Lake copy, but the docs state only the
+      connectivity requirement — purpose, direction, method and path all
+      unconfirmed.
+    params: []
+    pagination: {style: unknown}
+    auth: bearer-api-key
+    risk: write
+    confidence: unknown
+    evidence:
+      - source: https://public-docs.anvilogic.com/get-started/onboarding-guide/select-your-data-repository-and-get-data-in/integrate-splunk-as-your-data-repository/download-and-install-the-anvilogic-app-for-splunk/splunk-enterprise/verify-requirements.md
+        kind: public-docs
+        note: Host named in outbound-connectivity requirements with no purpose sentence.
+      - source: https://public-docs.anvilogic.com/get-started/reference-architectures/anvilogic-on-splunk-architecture.md
+        kind: public-docs
+        note: AI-Insights requires a copy of EOI/alert events collected to the platform Alert Lake (opt-in) — plausible traffic behind this host.
+    first_seen: '2026-07-06'
+    last_verified: null
+
+  # --------------------------------------------------------------------- alerts
+  alerts.ingest_vendor_events:
+    domain: alerts
+    method: UNKNOWN
+    path: UNKNOWN
+    summary: >-
+      Send events to databus.anvilogic.com "for third party vendor alert
+      integrations" (write/ingest implied by "send events"; no method/path
+      documented). Host: databus.anvilogic.com, HTTPS/443.
+    params: []
+    pagination: {style: unknown}
+    auth: bearer-api-key
+    risk: write
+    confidence: inferred
+    evidence:
+      - source: https://public-docs.anvilogic.com/get-started/onboarding-guide/select-your-data-repository-and-get-data-in/integrate-splunk-as-your-data-repository/download-and-install-the-anvilogic-app-for-splunk/splunk-enterprise/verify-requirements.md
+        kind: public-docs
+        note: Connectivity requirement with purpose sentence; no endpoint detail.
+    first_seen: '2026-07-06'
+    last_verified: null
+
+  alerts.soar_pull:
+    domain: alerts
+    method: UNKNOWN
+    path: UNKNOWN
+    summary: >-
+      SOAR integration "via REST API through either a push or a pull method" —
+      the pull method implies a surface from which SOARs retrieve alerts/EOIs.
+      Repeated verbatim across Splunk, Snowflake, Databricks and Azure
+      architecture FAQs; pull could also be from the customer's own SIEM index.
+    params: []
+    pagination: {style: unknown}
+    auth: bearer-api-key
+    risk: read
+    confidence: inferred
+    evidence:
+      - source: https://public-docs.anvilogic.com/get-started/reference-architectures/anvilogic-on-splunk-architecture.md
+        kind: public-docs
+        note: FAQ statement only; no host/path given.
+    first_seen: '2026-07-06'
+    last_verified: null
+
+  # ---------------------------------------------------------------------- feeds
+  feeds.update:
+    domain: feeds
+    method: UNKNOWN
+    path: UNKNOWN
+    summary: >-
+      Update a data feed's tags/data categories and feed quality (Maturity
+      Score > Data Feeds > feed > Tags / Feed Quality dropdown > Update). Feed
+      quality gates recommendations (only "Good" feeds generate them).
+    params:
+      - name: feed_id
+        note: Inferred; UI operates on a selected feed.
+      - name: tags
+        note: Tags / data categories, editable in UI.
+      - name: feed_quality
+        note: Quality rating dropdown, editable in UI.
+    pagination: {style: unknown}
+    auth: bearer-api-key
+    risk: write
+    confidence: inferred
+    evidence:
+      - source: https://public-docs.anvilogic.com/get-started/onboarding-guide/review-data-feeds.md
+        kind: public-docs
+        note: UI action description only.
+    first_seen: '2026-07-06'
+    last_verified: null
+
+  feeds.create_forwarding_integration:
+    domain: feeds
+    method: UNKNOWN
+    path: UNKNOWN
+    summary: >-
+      Create a "forward events" custom-data integration; the platform provisions
+      an S3 bucket and per-integration access key/id pairs for streaming raw
+      data into the Snowflake onboarding pipeline. Data plane is S3; an
+      integration-creation surface must exist on the platform.
+    params: []
+    pagination: {style: unknown}
+    auth: bearer-api-key
+    risk: write
+    confidence: inferred
+    evidence:
+      - source: https://public-docs.anvilogic.com/get-started/reference-architectures/anvilogic-on-snowflake-architecture/fluentbit/linux-data.md
+        kind: public-docs
+        note: Example per-integration buckets avl-raw-prod-s3-*/sdi_custom_data-N with per-integration credentials.
+    first_seen: '2026-07-06'
+    last_verified: null
+
+  # -------------------------------------------------------------------- metrics
+  metrics.detection_coverage:
+    domain: metrics
+    method: UNKNOWN
+    path: UNKNOWN
+    summary: Retrieve detection coverages (MITRE/coverage posture) for the org.
+    params: []
+    pagination: {style: unknown}
+    auth: bearer-api-key
+    risk: read
+    confidence: inferred
+    evidence:
+      - source: https://www.tines.com/solutions/products/anvilogic/
+        kind: connector-page
+        note: Tines pre-built action "Retrieves detection coverages in Anvilogic".
+    first_seen: '2026-07-06'
+    last_verified: null
+
+  # ------------------------------------------------------------------- platform
+  platform.generate_api_key:
+    domain: platform
+    method: UNKNOWN
+    path: UNKNOWN
+    summary: >-
+      Generate a platform API key (UI action Settings > Generate API Key on
+      secure.anvilogic.com; key is copied into the Anvilogic App for Splunk's
+      API Settings).
+    params: []
+    pagination: {style: unknown}
+    auth: bearer-api-key
+    risk: write
+    confidence: inferred
+    evidence:
+      - source: https://public-docs.anvilogic.com/get-started/onboarding-guide/select-your-data-repository-and-get-data-in/integrate-splunk-as-your-data-repository/connect-to-the-anvilogic-platform.md
+        kind: public-docs
+        note: UI gesture documented; backing endpoint unnamed.
+    first_seen: '2026-07-06'
+    last_verified: null
+
+  platform.download_splunk_app:
+    domain: platform
+    method: UNKNOWN
+    path: UNKNOWN
+    summary: >-
+      Download the Anvilogic App for Splunk package (SPL file) from the platform
+      Settings page ("Anvilogic Splunk App" field > Download). Alternative
+      channel is Splunkbase.
+    params: []
+    pagination: {style: unknown}
+    auth: bearer-api-key
+    risk: read
+    confidence: inferred
+    evidence:
+      - source: https://public-docs.anvilogic.com/get-started/onboarding-guide/select-your-data-repository-and-get-data-in/integrate-splunk-as-your-data-repository/download-and-install-the-anvilogic-app-for-splunk/splunk-enterprise/download-the-anvilogic-app-for-splunk.md
+        kind: public-docs
+        note: UI action only.
+    first_seen: '2026-07-06'
+    last_verified: null
+
+  platform.health_check:
+    domain: platform
+    method: UNKNOWN
+    path: UNKNOWN
+    summary: >-
+      Connectivity/health check between the Splunk app and the platform, invoked
+      via Splunk search `| avlmanage command=check_app_health`; status shown in
+      the app's Health Monitoring dashboard. The custom command wraps a platform
+      call; underlying endpoint unnamed.
+    params: []
+    pagination: {style: unknown}
+    auth: bearer-api-key
+    risk: read
+    confidence: inferred
+    evidence:
+      - source: https://public-docs.anvilogic.com/get-started/onboarding-guide/select-your-data-repository-and-get-data-in/integrate-splunk-as-your-data-repository/connect-to-the-anvilogic-platform.md
+        kind: public-docs
+        note: Documented as a Splunk custom command, not a REST call.
+    first_seen: '2026-07-06'
+    last_verified: null
+
+  platform.integrate_snowflake:
+    domain: platform
+    method: UNKNOWN
+    path: UNKNOWN
+    summary: >-
+      Guided-onboarding Snowflake integration: submit a Snowflake account
+      identifier; the platform generates SQL (anvilogic_service user,
+      anvilogic_admin role, S3 storage integration) and finalizes the connection
+      on Add. Wizard-backed endpoints unnamed.
+    params: []
+    pagination: {style: unknown}
+    auth: bearer-api-key
+    risk: write
+    confidence: inferred
+    evidence:
+      - source: https://public-docs.anvilogic.com/get-started/onboarding-guide/select-your-data-repository-and-get-data-in/integrate-snowflake-as-your-data-repository.md
+        kind: public-docs
+        note: UI wizard description only.
+    first_seen: '2026-07-06'
+    last_verified: null
+
+  platform.update_threat_profile:
+    domain: platform
+    method: UNKNOWN
+    path: UNKNOWN
+    summary: >-
+      Create/update the company threat profile (region, industry/verticals,
+      infrastructure) during guided onboarding; editable later. Drives the
+      recommendation engine. Weak endpoint signal (pure UI description).
+    params: []
+    pagination: {style: unknown}
+    auth: bearer-api-key
+    risk: write
+    confidence: inferred
+    evidence:
+      - source: https://public-docs.anvilogic.com/get-started/onboarding-guide/define-your-companys-threat-profile.md
+        kind: public-docs
+        note: UI action only.
+    first_seen: '2026-07-06'
+    last_verified: null
+
+  platform.list_vendors:
+    domain: platform
+    method: UNKNOWN
+    path: UNKNOWN
+    summary: Retrieve vendors configured for the org (data vendors/products; cf. EOI field avl_vendor_product).
+    params: []
+    pagination: {style: unknown}
+    auth: bearer-api-key
+    risk: read
+    confidence: inferred
+    evidence:
+      - source: https://www.tines.com/solutions/products/anvilogic/
+        kind: connector-page
+        note: Tines pre-built action "Retrieve vendors by org in Anvilogic".
+    first_seen: '2026-07-06'
+    last_verified: null
+
+  platform.copilot_license:
+    domain: platform
+    method: UNKNOWN
+    path: UNKNOWN
+    summary: Get Copilot license/entitlement information for the org.
+    params: []
+    pagination: {style: unknown}
+    auth: bearer-api-key
+    risk: read
+    confidence: inferred
+    evidence:
+      - source: https://www.tines.com/solutions/products/anvilogic/
+        kind: connector-page
+        note: Tines pre-built action "Get Copilot License Information".
+    first_seen: '2026-07-06'
+    last_verified: null
+
+  platform.priorities_list_all:
+    domain: platform
+    method: UNKNOWN
+    path: UNKNOWN
+    summary: Get all defined priorities in the org (threat prioritization config; umbrella over the per-list actions).
+    params: []
+    pagination: {style: unknown}
+    auth: bearer-api-key
+    risk: read
+    confidence: inferred
+    evidence:
+      - source: https://www.tines.com/solutions/products/anvilogic/
+        kind: connector-page
+        note: Tines pre-built action "Get all defined priorities in your organisation in Anvilogic".
+    first_seen: '2026-07-06'
+    last_verified: null
+
+  platform.priorities_threat_groups:
+    domain: platform
+    method: UNKNOWN
+    path: UNKNOWN
+    summary: Get the threat-group priorities list (cf. EOI field avl_threat_groups).
+    params: []
+    pagination: {style: unknown}
+    auth: bearer-api-key
+    risk: read
+    confidence: inferred
+    evidence:
+      - source: https://www.tines.com/solutions/products/anvilogic/
+        kind: connector-page
+        note: Tines pre-built action "Get threat group priorities list".
+    first_seen: '2026-07-06'
+    last_verified: null
+
+  platform.priorities_platforms:
+    domain: platform
+    method: UNKNOWN
+    path: UNKNOWN
+    summary: Get the platform (victim/target platform) priorities list (cf. EOI field avl_victim_platform).
+    params: []
+    pagination: {style: unknown}
+    auth: bearer-api-key
+    risk: read
+    confidence: inferred
+    evidence:
+      - source: https://www.tines.com/solutions/products/anvilogic/
+        kind: connector-page
+        note: Tines pre-built action "Get platform priorities list".
+    first_seen: '2026-07-06'
+    last_verified: null
+
+  platform.priorities_mitre_techniques:
+    domain: platform
+    method: UNKNOWN
+    path: UNKNOWN
+    summary: Get the MITRE technique priorities list (cf. EOI field avl_mitre_technique).
+    params: []
+    pagination: {style: unknown}
+    auth: bearer-api-key
+    risk: read
+    confidence: inferred
+    evidence:
+      - source: https://www.tines.com/solutions/products/anvilogic/
+        kind: connector-page
+        note: Tines pre-built action "Get MITRE technique priorities list".
+    first_seen: '2026-07-06'
+    last_verified: null
+
+  platform.priorities_prioritised_techniques:
+    domain: platform
+    method: UNKNOWN
+    path: UNKNOWN
+    summary: >-
+      Get the prioritised techniques list. Possibly distinct from the MITRE
+      technique priorities list; delta unclear from public data.
+    params: []
+    pagination: {style: unknown}
+    auth: bearer-api-key
+    risk: read
+    confidence: inferred
+    evidence:
+      - source: https://www.tines.com/solutions/products/anvilogic/
+        kind: connector-page
+        note: Tines pre-built action "Get prioritised techniques list".
+    first_seen: '2026-07-06'
+    last_verified: null
+
+  platform.priorities_data_categories:
+    domain: platform
+    method: UNKNOWN
+    path: UNKNOWN
+    summary: Get the data-category priorities list (cf. EOI field avl_data_category).
+    params: []
+    pagination: {style: unknown}
+    auth: bearer-api-key
+    risk: read
+    confidence: inferred
+    evidence:
+      - source: https://www.tines.com/solutions/products/anvilogic/
+        kind: connector-page
+        note: Tines pre-built action "Get data category priorities list".
+    first_seen: '2026-07-06'
+    last_verified: null

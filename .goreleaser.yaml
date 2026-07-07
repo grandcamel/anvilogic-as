@@ -1,0 +1,48 @@
+version: 2
+
+project_name: anvilogic-as
+
+before:
+  hooks:
+    - go mod tidy
+
+builds:
+  - id: anvilogic-as
+    main: ./cmd/anvilogic-as
+    binary: anvilogic-as
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - darwin
+      - linux
+      - windows
+    goarch:
+      - amd64
+      - arm64
+    ldflags:
+      - -s -w -X main.version={{ .Version }}
+
+archives:
+  - id: default
+    formats: [tar.gz]
+    format_overrides:
+      - goos: windows
+        formats: [zip]
+    name_template: >-
+      {{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}
+
+checksum:
+  name_template: checksums.txt
+
+changelog:
+  use: github-native
+
+# Wave 5: enable the Homebrew tap once grandcamel/homebrew-tap exists.
+# brews:
+#   - name: anvilogic-as
+#     repository:
+#       owner: grandcamel
+#       name: homebrew-tap
+#     homepage: https://github.com/grandcamel/anvilogic-as
+#     description: Agent-first CLI for the Anvilogic SaaS control-plane API
+#     license: MIT
